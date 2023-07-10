@@ -1,0 +1,204 @@
+#include<iostream>
+using namespace std;
+
+//链表节点类型定义
+typedef struct LinkNode{
+    int data;
+    struct LinkNode *next;
+}Node;
+
+/*
+//1.静态链表
+void test(){
+    Node node1={10,NULL};
+    Node node2={20,NULL};
+    Node node3={30,NULL};
+
+    node1.next=&node2;
+    node2.next=&node3;
+
+    //先定义一个辅助指针变量
+    Node *pCurrent=&node1;
+    //遍历链表
+    while(pCurrent !=NULL){
+        printf("%d ",pCurrent->data);
+        //指针移动到下一个元素首地址
+        pCurrent=pCurrent->next;
+    }
+}
+*/
+
+//2.初始化及遍历
+//初始化链表
+Node *Init_LinkList();
+//在值为oldval的位置插入一个新的数据newval
+void Insert_LinkList(Node *header,int oldval,int newval);
+//删除值为val的结点
+void Remove_LinkList(Node *header,int delval);
+//遍历
+void Foreach_LinkList(Node *header);
+//销毁
+void Destroy_LinkList(Node *header);
+//清空
+void Clear_LinkList(Node *header);
+
+Node *Init_LinkList(){
+    //创建头结点
+    Node *header=(Node *)malloc(sizeof(Node));
+    header->data=-1;
+    header->next=NULL;
+    //尾部指针
+    Node *pRear=header;
+
+    int val=-1;
+    while(true){
+        printf("输入插入数据：\n");
+        scanf("%d",&val);
+        if(val==-1){
+            break;
+        }
+
+        //先创建新节点
+        Node *newnode=(Node *)malloc(sizeof(Node));
+        newnode->data=val;
+        newnode->next=NULL;
+        //新节点插入到链表中
+        pRear->next=newnode;
+        //更新尾部指针指向
+        pRear=newnode;
+    }
+    return header;
+}
+
+void Insert_LinkList(Node *header,int oldval,int newval){
+    if(header==NULL){
+        return ;
+    }
+    //定义两个辅助指针变量
+    Node *pPrev=header;
+    Node *pCurrent=pPrev->next;
+    while(pCurrent!=NULL){
+        if(pCurrent->data==oldval){
+            break;
+        }
+        //移动两个辅助指针
+        pPrev=pCurrent;
+        pCurrent=pCurrent->next;
+    }
+    //先创建新节点
+    Node *newnode=(Node *)malloc(sizeof(Node));
+    newnode->data=newval;
+    newnode->next=NULL;
+    //新节点插入到链表
+    newnode->next=pCurrent;
+    pPrev->next=newnode;
+    //如果不存在则默认插在尾部
+}
+
+void Clear_LinkList(Node *header){
+    //清空结点使链表只有头结点
+    if(header==NULL){
+        return ;
+    }
+    //辅助指针变量
+    Node *pCurrent=header->next;
+    while(pCurrent!=NULL){
+        //先保存当前节点的下一个节点地址
+        Node *pNext=pCurrent->next;
+        //释放当前节点内存
+        free(pCurrent);
+        //pCurrent指向下一个节点
+        pCurrent=pNext;
+    }
+    header->next=NULL;
+}
+
+void Remove_LinkList(Node *header,int delval){
+    if(NULL==header){
+        return ;
+    }
+    //两个辅助指针变量
+    Node *pPrev=header;
+    Node *pCurrent=pPrev->next;
+    while(pCurrent!=NULL){
+        if(pCurrent->data==delval){
+            break;
+        }
+        //移动两个辅助指针
+        pPrev=pCurrent;
+        pCurrent=pCurrent->next;
+    }
+    //未找到删除节点
+    if(NULL==pCurrent){
+        return;
+    }
+    //若找到删除结点，重新建立待删除节点的前驱和后继节点关系
+    pPrev->next=pCurrent->next;
+    //释放删除节点内存
+    free(pCurrent);
+    pCurrent=NULL;
+}
+
+void Destroy_LinkList(Node *header){
+    //销毁头结点
+    //辅助指针变量
+    Node *pCurrent=header;
+    while(pCurrent !=NULL){
+        //先保存当前节点的下一个节点地址
+        Node *pNext=pCurrent->next;
+        //释放当前节点内存
+        printf("%d结点被销毁\n",pCurrent->data);
+        free(pCurrent);
+        //pCurrent指向下一个节点
+        pCurrent=pNext;
+    }
+}
+
+void Foreach_LinkList(Node *header){
+    if(NULL==header){
+        return ;
+    }
+    //辅助指针变量
+    Node *pCurrent=header->next;
+    while(pCurrent !=NULL){
+        printf("%d ",pCurrent->data);
+        pCurrent=pCurrent->next;
+    }
+    printf("\n");
+}
+
+void test(){
+    //初始化链表 1 2 (插入666) 3 4 5
+    Node *header=Init_LinkList();
+    //打印链表
+    Foreach_LinkList(header);
+    //插入链表
+    Insert_LinkList(header,3,666);
+    //打印链表
+    printf("-----------------\n");
+    Foreach_LinkList(header);
+    //清空链表
+    Clear_LinkList(header);
+    printf("-----------------\n");
+    Foreach_LinkList(header);
+
+    //清空后插入新链表
+    Insert_LinkList(header,3,11);
+    Insert_LinkList(header,3,22);
+    Insert_LinkList(header,3,33);
+    Insert_LinkList(header,3,44);
+    Insert_LinkList(header,3,55);
+    printf("-----------------\n");
+    Foreach_LinkList(header);
+    //移除22
+    Remove_LinkList(header,22);
+    printf("-----------------\n");
+    Foreach_LinkList(header);
+    //销毁列表
+    Destroy_LinkList(header);
+
+}
+
+int main(){
+    test();
+}
