@@ -183,11 +183,28 @@ void Foreach_LinkList(Node *header){
     printf("\n");
 }
 
+//查看链表长度
+int length(Node *header){
+    int n=0;
+    Node *pCurrent=header->next;
+    if(header==NULL){
+        return 0;
+    }
+    while(pCurrent!=NULL){
+        pCurrent=pCurrent->next;
+        n++;
+    }
+    return n;
+    printf("\n");
+
+}
+
 void test(){
     //初始化链表 1 2 (插入666) 3 4 5
     Node *header=Init_LinkList();
     //打印链表
     Foreach_LinkList(header);
+    printf("%d",length(header));
     //插入链表
     Insert_LinkList(header,3,666);
     //打印链表
