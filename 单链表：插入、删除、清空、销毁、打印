@@ -120,23 +120,39 @@ void Remove_LinkList(Node *header,int delval){
     //两个辅助指针变量
     Node *pPrev=header;
     Node *pCurrent=pPrev->next;
+    /*删除一个节点
+    // while(pCurrent!=NULL&&pCurrent->data!=delval){
+    //     //移动两个辅助指针
+    //     pPrev=pCurrent;
+    //     pCurrent=pCurrent->next;
+    // }
+    // //未找到删除节点
+    // if(NULL==pCurrent){
+    //     return;
+    // }
+    
+    // //若找到删除结点，重新建立待删除节点的前驱和后继节点关系
+    // pPrev->next=pCurrent->next;
+    // //释放删除节点内存
+    // free(pCurrent);
+    // pCurrent=NULL;
+    */
+
+   //删除链表中元素相同的结点
     while(pCurrent!=NULL){
         if(pCurrent->data==delval){
-            break;
+            Node *tmp=pCurrent;
+            pCurrent=tmp->next;
+            pPrev->next=pCurrent;
+            free(tmp);
         }
+        else{
         //移动两个辅助指针
         pPrev=pCurrent;
         pCurrent=pCurrent->next;
+        }
     }
-    //未找到删除节点
-    if(NULL==pCurrent){
-        return;
-    }
-    //若找到删除结点，重新建立待删除节点的前驱和后继节点关系
-    pPrev->next=pCurrent->next;
-    //释放删除节点内存
-    free(pCurrent);
-    pCurrent=NULL;
+    
 }
 
 void Destroy_LinkList(Node *header){
@@ -187,6 +203,7 @@ void test(){
     Insert_LinkList(header,3,22);
     Insert_LinkList(header,3,33);
     Insert_LinkList(header,3,44);
+    Insert_LinkList(header,3,22);
     Insert_LinkList(header,3,55);
     printf("-----------------\n");
     Foreach_LinkList(header);
