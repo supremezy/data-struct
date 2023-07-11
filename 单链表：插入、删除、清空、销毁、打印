@@ -201,7 +201,7 @@ void test(){
     Node *header=Init_LinkList();
     //打印链表
     Foreach_LinkList(header);
-    printf("%d",length(header));
+    printf("%d\n",length(header));
     //插入链表
     Insert_LinkList(header,3,666);
     //打印链表
