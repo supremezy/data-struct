@@ -77,10 +77,7 @@ void Insert_LinkList(Node *header,int oldval,int newval){
     //定义两个辅助指针变量
     Node *pPrev=header;
     Node *pCurrent=pPrev->next;
-    while(pCurrent!=NULL){
-        if(pCurrent->data==oldval){
-            break;
-        }
+    while(pCurrent!=NULL&&pCurrent->data!=oldval){
         //移动两个辅助指针
         pPrev=pCurrent;
         pCurrent=pCurrent->next;
