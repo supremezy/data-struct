@@ -1,0 +1,94 @@
+# include <iostream>
+using namespace std;
+
+//定义链表
+typedef struct Linknode{
+    int data;
+    struct Linknode *next;
+}Node;
+
+Node *Init_LinkList(){
+    //创建头结点
+    Node *header=(Node *)malloc(sizeof(Node));
+    header->data=-1;
+    header->next=NULL;
+    //尾部指针
+    Node *pRear=header;
+
+    int val=-1;
+    while(true){
+        printf("输入插入数据：\n");
+        scanf("%d",&val);
+        if(val==-1){
+            break;
+        }
+
+        //先创建新节点
+        Node *newnode=(Node *)malloc(sizeof(Node));
+        newnode->data=val;
+        newnode->next=NULL;
+        //新节点插入到链表中
+        pRear->next=newnode;
+        //更新尾部指针指向
+        pRear=newnode;
+    }
+    return header;
+}
+
+void Foreach_LinkList(Node *header){
+    if(NULL==header){
+        return ;
+    }
+    //辅助指针变量
+    Node *pCurrent=header->next;
+    while(pCurrent !=NULL){
+        printf("%d ",pCurrent->data);
+        pCurrent=pCurrent->next;
+    }
+    printf("\n");
+}
+
+void Sort(Node *header){
+    
+    int count=0;//count为链表结点数
+    Node *p,*q,*r;
+    p=header;
+    while(p->next!=NULL){
+        count++;
+        p=p->next;
+    }
+
+    for(int i=0;i<count-1;i++){
+        r=header;
+        q=r->next;
+        p=q->next;
+        
+        for(int j=0;j<count-i-1;j++){
+            if(q->data>p->data){
+                q->next=p->next;
+                q->next = p->next;
+				p->next = q;
+				r->next = p;
+            }
+            r=r->next;
+            q=r->next;
+            p=q->next;
+            //一下三行是错误的
+            // r=r->next;
+            // q=r->next;
+            // p=q->next; 
+        }
+    }
+}
+
+int main(){
+    //初始化链表 1 2 (插入666) 3 4 5
+    Node *header=Init_LinkList();
+    //打印链表
+    Foreach_LinkList(header);
+    Sort(header);
+    //打印链表
+    printf("-----------------\n");
+    Foreach_LinkList(header);;
+    return 0;
+}
